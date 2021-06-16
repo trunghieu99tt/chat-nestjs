@@ -31,6 +31,7 @@ export class UploadTool {
             const response = await cloudinary.uploader.upload(file);
             return response && response.secure_url;
         } catch (error) {
+            console.log(`error uploadPhotoToServer`, error)
             return null;
         }
     };
@@ -43,6 +44,7 @@ export class UploadTool {
                 .jpeg({ quality })
                 .toFile(`${UploadTool.imagePath}/uploader.jpeg`);
         } catch (error) {
+            console.log(`error resizeImage`, error)
         }
     };
 
