@@ -33,4 +33,9 @@ export class UserController {
     async resetPassword(@Body('email') email: string) {
         return await this.userService.resetPassword(email);
     }
+
+    @Get("/test")
+    test() {
+        return "hello from test";
+    }
 }

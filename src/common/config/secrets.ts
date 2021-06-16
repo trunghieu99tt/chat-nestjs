@@ -21,6 +21,7 @@ export const MONGO_URI = getEnv('MONGO_URI')
     .replace("<DB_NAME>", MONGO_DB)
 
 export const SERVER_PORT = getEnv("SERVER_PORT");
+export const PORT = getEnv("PORT");
 
 // Auth
 export const GOOGLE_CLIENT_ID = getEnv('GOOGLE_CLIENT_ID');
