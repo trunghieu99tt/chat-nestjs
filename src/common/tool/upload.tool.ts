@@ -43,6 +43,7 @@ export class UploadTool {
                 .jpeg({ quality })
                 .toFile(`${UploadTool.imagePath}/uploader.jpeg`);
         } catch (error) {
+            console.log(`__dirname`, __dirname);
             console.log(`error resizeImage`, error);
             throw error;
         }
