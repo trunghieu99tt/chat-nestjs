@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.REDIS_PASSWORD = exports.REDIS_HOST = exports.REDIS_PORT = exports.MAILER_PASSWORD = exports.MAILER_EMAIL_ID = exports.CLOUDINARY_PATH = exports.CLOUDINARY_URL = exports.GITHUB_REDIRECT_URL = exports.GITHUB_CLIENT_SECRET = exports.GITHUB_CLIENT_ID = exports.JWT_SECRET = exports.JWT_EXP = exports.GOOGLE_SECRET = exports.GOOGLE_CLIENT_ID = exports.PORT = exports.SERVER_PORT = exports.MONGO_URI = exports.MONGO_DB = exports.MONGO_PASSWORD = exports.MONGO_USERNAME = exports.getEnv = void 0;
+exports.REDIS_PASSWORD = exports.REDIS_HOST = exports.REDIS_PORT = exports.MAILER_PASSWORD = exports.MAILER_EMAIL_ID = exports.CLOUDINARY_PATH_DEV = exports.CLOUDINARY_PATH = exports.CLOUDINARY_URL = exports.GITHUB_REDIRECT_URL = exports.GITHUB_CLIENT_SECRET = exports.GITHUB_CLIENT_ID = exports.JWT_SECRET = exports.JWT_EXP = exports.GOOGLE_SECRET = exports.GOOGLE_CLIENT_ID = exports.PORT = exports.SERVER_PORT = exports.MONGO_URI = exports.MONGO_DB = exports.MONGO_PASSWORD = exports.MONGO_USERNAME = exports.NODE_ENV = exports.getEnv = void 0;
 const chalk_1 = require("chalk");
 const dotenv = require("dotenv");
 dotenv.config();
@@ -12,6 +12,7 @@ const getEnv = (key, ignore = false) => {
     return value;
 };
 exports.getEnv = getEnv;
+exports.NODE_ENV = exports.getEnv('NODE_ENV');
 exports.MONGO_USERNAME = exports.getEnv('MONGO_USERNAME');
 exports.MONGO_PASSWORD = exports.getEnv('MONGO_PASSWORD');
 exports.MONGO_DB = exports.getEnv('MONGO_DB');
@@ -30,6 +31,7 @@ exports.GITHUB_CLIENT_SECRET = exports.getEnv('GITHUB_CLIENT_SECRET');
 exports.GITHUB_REDIRECT_URL = exports.getEnv('GITHUB_REDIRECT_URL');
 exports.CLOUDINARY_URL = exports.getEnv('CLOUDINARY_URL');
 exports.CLOUDINARY_PATH = exports.getEnv('CLOUDINARY_PATH');
+exports.CLOUDINARY_PATH_DEV = exports.getEnv('CLOUDINARY_PATH_DEV');
 exports.MAILER_EMAIL_ID = exports.getEnv('MAILER_EMAIL_ID');
 exports.MAILER_PASSWORD = exports.getEnv('MAILER_PASSWORD');
 exports.REDIS_PORT = Number(exports.getEnv("REDIS_PORT"));

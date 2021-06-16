@@ -1,6 +1,6 @@
 import { MulterOptions } from "@nestjs/platform-express/multer/interfaces/multer-options.interface";
 import { exception } from "console";
-import { CLOUDINARY_PATH } from "../config/secrets";
+import { CLOUDINARY_PATH, CLOUDINARY_PATH_DEV, NODE_ENV } from "../config/secrets";
 
 const cloudinary = require("cloudinary").v2;
 const sharp = require("sharp");
@@ -9,7 +9,7 @@ const multer = require('multer');
 
 export class UploadTool {
 
-    static imagePath: string = CLOUDINARY_PATH;
+    static imagePath: string = NODE_ENV === 'production' ? CLOUDINARY_PATH : CLOUDINARY_PATH_DEV;
 
     static multerFilter = (req, file, cb) => {
         if (!file.mimetype.startsWith("image")) {
@@ -36,6 +36,9 @@ export class UploadTool {
     };
 
     static resizeImage = async (file, width, height, format, quality) => {
+
+        console.log(`imagePath`, UploadTool.imagePath)
+
         try {
             await sharp(file.buffer)
                 .resize(width, height)
@@ -43,8 +46,6 @@ export class UploadTool {
                 .jpeg({ quality })
                 .toFile(`${UploadTool.imagePath}/uploader.jpeg`);
         } catch (error) {
-            console.log(`__dirname`, __dirname);
-            console.log(`error resizeImage`, error);
             throw error;
         }
     };
@@ -64,16 +65,13 @@ export class UploadTool {
             const uploadResponse = await UploadTool.uploadPhotoToServer(
                 `${UploadTool.imagePath}/uploader.${format}`
             );
-
-            console.log(`uploadResponse resizeAndUploadSingle`, uploadResponse)
-
             // remove file in local machine
             fs.unlink(`${UploadTool.imagePath}/uploader.${format}`, (err) => {
                 console.log("err", err);
             });
+
             return uploadResponse;
         } catch (error) {
-            console.log(`error resizeAndUploadSingle`, error);
             throw error;
         }
     };

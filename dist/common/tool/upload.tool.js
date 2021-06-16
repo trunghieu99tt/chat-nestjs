@@ -10,7 +10,7 @@ const multer = require('multer');
 class UploadTool {
 }
 exports.UploadTool = UploadTool;
-UploadTool.imagePath = secrets_1.CLOUDINARY_PATH;
+UploadTool.imagePath = secrets_1.NODE_ENV === 'production' ? secrets_1.CLOUDINARY_PATH : secrets_1.CLOUDINARY_PATH_DEV;
 UploadTool.multerFilter = (req, file, cb) => {
     if (!file.mimetype.startsWith("image")) {
         return cb(new console_1.exception("Not an image! Please upload only images", 400), false);
@@ -31,6 +31,7 @@ UploadTool.uploadPhotoToServer = async (file) => {
     }
 };
 UploadTool.resizeImage = async (file, width, height, format, quality) => {
+    console.log(`imagePath`, UploadTool.imagePath);
     try {
         await sharp(file.buffer)
             .resize(width, height)
@@ -39,7 +40,6 @@ UploadTool.resizeImage = async (file, width, height, format, quality) => {
             .toFile(`${UploadTool.imagePath}/uploader.jpeg`);
     }
     catch (error) {
-        console.log(`error resizeImage`, error);
         throw error;
     }
 };
@@ -47,14 +47,12 @@ UploadTool.resizeAndUploadSingle = async (file, width = 2000, height = 1333, for
     try {
         await UploadTool.resizeImage(file, width, height, format, quality);
         const uploadResponse = await UploadTool.uploadPhotoToServer(`${UploadTool.imagePath}/uploader.${format}`);
-        console.log(`uploadResponse resizeAndUploadSingle`, uploadResponse);
         fs.unlink(`${UploadTool.imagePath}/uploader.${format}`, (err) => {
             console.log("err", err);
         });
         return uploadResponse;
     }
     catch (error) {
-        console.log(`error resizeAndUploadSingle`, error);
         throw error;
     }
 };
