@@ -18,4 +18,5 @@ export declare class UserController {
     resetPassword(email: string): Promise<{
         success: boolean;
     }>;
+    test(): string;
 }

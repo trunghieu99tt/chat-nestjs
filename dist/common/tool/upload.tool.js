@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UploadTool = void 0;
 const console_1 = require("console");
+const secrets_1 = require("../config/secrets");
 const cloudinary = require("cloudinary").v2;
 const sharp = require("sharp");
 const fs = require("fs");
@@ -9,7 +10,7 @@ const multer = require('multer');
 class UploadTool {
 }
 exports.UploadTool = UploadTool;
-UploadTool.imagePath = `/home/rikikudo/Code/Backend/NodeJS/auth-app/src/common/tool/upload`;
+UploadTool.imagePath = secrets_1.CLOUDINARY_PATH;
 UploadTool.multerFilter = (req, file, cb) => {
     if (!file.mimetype.startsWith("image")) {
         return cb(new console_1.exception("Not an image! Please upload only images", 400), false);
@@ -26,7 +27,7 @@ UploadTool.uploadPhotoToServer = async (file) => {
         return response && response.secure_url;
     }
     catch (error) {
-        return null;
+        throw error;
     }
 };
 UploadTool.resizeImage = async (file, width, height, format, quality) => {
@@ -38,16 +39,24 @@ UploadTool.resizeImage = async (file, width, height, format, quality) => {
             .toFile(`${UploadTool.imagePath}/uploader.jpeg`);
     }
     catch (error) {
+        console.log(`error resizeImage`, error);
+        throw error;
     }
 };
 UploadTool.resizeAndUploadSingle = async (file, width = 2000, height = 1333, format = "jpeg", quality = 90) => {
-    await UploadTool.resizeImage(file, width, height, format, quality);
-    const uploadResponse = await UploadTool.uploadPhotoToServer(`${UploadTool.imagePath}/uploader.${format}`);
-    console.log(`uploadResponse resizeAndUploadSingle`, uploadResponse);
-    fs.unlink(`${UploadTool.imagePath}/uploader.${format}`, (err) => {
-        console.log("err", err);
-    });
-    return uploadResponse;
+    try {
+        await UploadTool.resizeImage(file, width, height, format, quality);
+        const uploadResponse = await UploadTool.uploadPhotoToServer(`${UploadTool.imagePath}/uploader.${format}`);
+        console.log(`uploadResponse resizeAndUploadSingle`, uploadResponse);
+        fs.unlink(`${UploadTool.imagePath}/uploader.${format}`, (err) => {
+            console.log("err", err);
+        });
+        return uploadResponse;
+    }
+    catch (error) {
+        console.log(`error resizeAndUploadSingle`, error);
+        throw error;
+    }
 };
 UploadTool.resizeAndUploadMulti = async (files, width = 2000, height = 1333, format = "jpeg", quality = 90) => {
     const imagesLink = [];

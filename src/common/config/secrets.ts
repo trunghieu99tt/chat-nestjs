@@ -34,6 +34,7 @@ export const GITHUB_REDIRECT_URL = getEnv('GITHUB_REDIRECT_URL');
 
 // Cloudinary
 export const CLOUDINARY_URL = getEnv('CLOUDINARY_URL');
+export const CLOUDINARY_PATH = getEnv('CLOUDINARY_PATH');
 
 export const MAILER_EMAIL_ID = getEnv('MAILER_EMAIL_ID');
 export const MAILER_PASSWORD = getEnv('MAILER_PASSWORD');

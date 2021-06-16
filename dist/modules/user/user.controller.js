@@ -38,6 +38,9 @@ let UserController = class UserController {
     async resetPassword(email) {
         return await this.userService.resetPassword(email);
     }
+    test() {
+        return "hello from test";
+    }
 };
 __decorate([
     common_1.Get('/me'),
@@ -63,6 +66,12 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "resetPassword", null);
+__decorate([
+    common_1.Get("/test"),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], UserController.prototype, "test", null);
 UserController = __decorate([
     common_1.Controller('user'),
     __metadata("design:paramtypes", [user_service_1.UserService])
