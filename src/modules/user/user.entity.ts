@@ -26,8 +26,9 @@ export class SystemInfo {
 
 export const SystemInfoSchema = SchemaFactory.createForClass(SystemInfo);
 
+export const USER_MODEL = "users";
 @Schema({
-    collection: 'users',
+    collection: USER_MODEL,
     toJSON: { virtuals: true }
 })
 export class User {

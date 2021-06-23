@@ -1,5 +1,6 @@
 import { Body, Controller, Get, HttpStatus, Patch, Post, Req, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { ResponseDTO } from 'src/common/dto/response.dto';
 import { MyTokenAuthGuard } from 'src/common/guards/token.guard';
 import { UploadTool } from 'src/common/tool/upload.tool';
 import { GetUser } from './decorator/get-user.decorator';
@@ -25,7 +26,7 @@ export class UserController {
     @Patch('/update')
     @UseGuards(MyTokenAuthGuard)
     @UseInterceptors(FileInterceptor('photo', UploadTool.imageUpload))
-    updateMe(@GetUser() oldUser: User, @Body() updatedUser: UserUpdateDTO, @UploadedFile() fileUpload: any): Promise<{ data: User, message: string, status: number }> {
+    updateMe(@GetUser() oldUser: User, @Body() updatedUser: UserUpdateDTO, @UploadedFile() fileUpload: any): Promise<ResponseDTO> {
         return this.userService.updateProfile(oldUser, updatedUser, fileUpload);
     }
 

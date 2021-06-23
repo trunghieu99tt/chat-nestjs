@@ -9,6 +9,7 @@ import { UploadTool } from 'src/common/tool/upload.tool';
 import { SMTPMailer } from 'src/config/mailer';
 import { EmailTool } from 'src/common/tool/email.tool';
 import { AuthToolService } from '../tool/auth-tool/auth-tool.service';
+import { ResponseDTO } from 'src/common/dto/response.dto';
 
 @Injectable()
 export class UserService {
@@ -59,7 +60,7 @@ export class UserService {
     }
 
 
-    async updateProfile(oldUser: User, updatedUser: UserUpdateDTO, fileUpload: any): Promise<{ data: User, message: string, status: number }> {
+    async updateProfile(oldUser: User, updatedUser: UserUpdateDTO, fileUpload: any): Promise<ResponseDTO> {
         if (fileUpload) {
             const uploadedFile = await UploadTool.resizeAndUploadSingle(fileUpload);
             updatedUser.photo = uploadedFile;
@@ -75,7 +76,7 @@ export class UserService {
             return {
                 data: response,
                 message: "OK",
-                status: 200,
+                statusCode: 200,
             };
         } catch (error) {
             throw new BadRequestException("Username does exist. Please choose another one!");

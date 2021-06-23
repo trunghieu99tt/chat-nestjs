@@ -11,6 +11,9 @@ export const getEnv = (key: string, ignore = false): string => {
     return value;
 };
 
+// Type
+export const NODE_ENV = getEnv('NODE_ENV');
+
 // Mongo
 export const MONGO_USERNAME = getEnv('MONGO_USERNAME');
 export const MONGO_PASSWORD = getEnv('MONGO_PASSWORD');
@@ -21,6 +24,7 @@ export const MONGO_URI = getEnv('MONGO_URI')
     .replace("<DB_NAME>", MONGO_DB)
 
 export const SERVER_PORT = getEnv("SERVER_PORT");
+export const PORT = getEnv("PORT");
 
 // Auth
 export const GOOGLE_CLIENT_ID = getEnv('GOOGLE_CLIENT_ID');
@@ -33,6 +37,8 @@ export const GITHUB_REDIRECT_URL = getEnv('GITHUB_REDIRECT_URL');
 
 // Cloudinary
 export const CLOUDINARY_URL = getEnv('CLOUDINARY_URL');
+export const CLOUDINARY_PATH = getEnv('CLOUDINARY_PATH');
+export const CLOUDINARY_PATH_DEV = getEnv('CLOUDINARY_PATH_DEV');
 
 export const MAILER_EMAIL_ID = getEnv('MAILER_EMAIL_ID');
 export const MAILER_PASSWORD = getEnv('MAILER_PASSWORD');

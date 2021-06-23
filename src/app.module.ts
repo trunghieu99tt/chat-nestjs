@@ -7,6 +7,9 @@ import { AuthModule } from './modules/auth/auth.module';
 import { UserModule } from './modules/user/user.module';
 import { TokenModule } from './modules/token/token.module';
 import { AuthToolModule } from './modules/tool/auth-tool/auth-tool.module';
+import { MessageModule } from './modules/message/message.module';
+import { RoomModule } from './modules/room/room.module';
+import { UploadModule } from './modules/upload/upload.module';
 
 // controller
 import { AppController } from './app.controller';
@@ -19,8 +22,11 @@ import configuration from './config/configuration';
 
 // secrets
 import { MONGO_URI } from './common/config/secrets';
+import { ChatGateway } from './modules/chat/chat.gateway';
+import { ChatModule } from './modules/chat/chat.module';
 
 // import { RedisToolModule } from './modules/tool/redis-tool/redis-tool.module';
+
 @Module({
 	imports: [
 		ConfigModule.forRoot({
@@ -37,6 +43,10 @@ import { MONGO_URI } from './common/config/secrets';
 		UserModule,
 		TokenModule,
 		AuthToolModule,
+		MessageModule,
+		RoomModule,
+		ChatModule,
+		UploadModule,
 		// RedisToolModule
 	],
 	controllers: [AppController],

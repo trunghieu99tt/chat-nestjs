@@ -1,5 +1,6 @@
 import { MulterOptions } from "@nestjs/platform-express/multer/interfaces/multer-options.interface";
 import { exception } from "console";
+import { CLOUDINARY_PATH, CLOUDINARY_PATH_DEV, NODE_ENV } from "../config/secrets";
 
 const cloudinary = require("cloudinary").v2;
 const sharp = require("sharp");
@@ -8,8 +9,7 @@ const multer = require('multer');
 
 export class UploadTool {
 
-    static imagePath: string = `/home/rikikudo/Code/Backend/NodeJS/auth-app/src/common/tool/upload`;
-
+    static imagePath: string = NODE_ENV === 'production' ? CLOUDINARY_PATH : CLOUDINARY_PATH_DEV;
 
     static multerFilter = (req, file, cb) => {
         if (!file.mimetype.startsWith("image")) {
@@ -31,11 +31,12 @@ export class UploadTool {
             const response = await cloudinary.uploader.upload(file);
             return response && response.secure_url;
         } catch (error) {
-            return null;
+            throw error;
         }
     };
 
     static resizeImage = async (file, width, height, format, quality) => {
+
         try {
             await sharp(file.buffer)
                 .resize(width, height)
@@ -43,6 +44,7 @@ export class UploadTool {
                 .jpeg({ quality })
                 .toFile(`${UploadTool.imagePath}/uploader.jpeg`);
         } catch (error) {
+            throw error;
         }
     };
 
@@ -53,21 +55,23 @@ export class UploadTool {
         format = "jpeg",
         quality = 90
     ) => {
-        // First, resize image using sharp
-        await UploadTool.resizeImage(file, width, height, format, quality);
+        try {
+            // First, resize image using sharp
+            await UploadTool.resizeImage(file, width, height, format, quality);
 
-        // When we have the file, save it to local storage
-        const uploadResponse = await UploadTool.uploadPhotoToServer(
-            `${UploadTool.imagePath}/uploader.${format}`
-        );
+            // When we have the file, save it to local storage
+            const uploadResponse = await UploadTool.uploadPhotoToServer(
+                `${UploadTool.imagePath}/uploader.${format}`
+            );
+            // remove file in local machine
+            fs.unlink(`${UploadTool.imagePath}/uploader.${format}`, (err) => {
+                console.log("err", err);
+            });
 
-        console.log(`uploadResponse resizeAndUploadSingle`, uploadResponse)
-
-        // remove file in local machine
-        fs.unlink(`${UploadTool.imagePath}/uploader.${format}`, (err) => {
-            console.log("err", err);
-        });
-        return uploadResponse;
+            return uploadResponse;
+        } catch (error) {
+            throw error;
+        }
     };
 
     static resizeAndUploadMulti = async (
