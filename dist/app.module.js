@@ -14,10 +14,14 @@ const auth_module_1 = require("./modules/auth/auth.module");
 const user_module_1 = require("./modules/user/user.module");
 const token_module_1 = require("./modules/token/token.module");
 const auth_tool_module_1 = require("./modules/tool/auth-tool/auth-tool.module");
+const message_module_1 = require("./modules/message/message.module");
+const room_module_1 = require("./modules/room/room.module");
+const upload_module_1 = require("./modules/upload/upload.module");
 const app_controller_1 = require("./app.controller");
 const app_service_1 = require("./app.service");
 const configuration_1 = require("./config/configuration");
 const secrets_1 = require("./common/config/secrets");
+const chat_module_1 = require("./modules/chat/chat.module");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
@@ -37,6 +41,10 @@ AppModule = __decorate([
             user_module_1.UserModule,
             token_module_1.TokenModule,
             auth_tool_module_1.AuthToolModule,
+            message_module_1.MessageModule,
+            room_module_1.RoomModule,
+            chat_module_1.ChatModule,
+            upload_module_1.UploadModule,
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],

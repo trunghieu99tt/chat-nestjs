@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.BackendErrorDTo = void 0;
-class BackendErrorDTo extends Error {
+exports.BackendErrorDTO = void 0;
+class BackendErrorDTO extends Error {
     constructor(statusCode, message, details, errorCode) {
         super();
         this.errorCode = errorCode;
@@ -10,5 +10,5 @@ class BackendErrorDTo extends Error {
         this.details = details;
     }
 }
-exports.BackendErrorDTo = BackendErrorDTo;
+exports.BackendErrorDTO = BackendErrorDTO;
 //# sourceMappingURL=backend-error.dto.js.map

@@ -3,6 +3,7 @@ import { UserDTO } from './dto/user.dto';
 import { User, UserDocument } from './user.entity';
 import { UserUpdateDTO } from './dto/user-update.dto';
 import { AuthToolService } from '../tool/auth-tool/auth-tool.service';
+import { ResponseDTO } from 'src/common/dto/response.dto';
 export declare class UserService {
     private userModel;
     private readonly authToolService;
@@ -13,11 +14,7 @@ export declare class UserService {
     findByEmail(email: string): Promise<UserDocument>;
     findByGoogleID(id: string): Promise<UserDocument>;
     getProfile(id: string): Promise<any>;
-    updateProfile(oldUser: User, updatedUser: UserUpdateDTO, fileUpload: any): Promise<{
-        data: User;
-        message: string;
-        status: number;
-    }>;
+    updateProfile(oldUser: User, updatedUser: UserUpdateDTO, fileUpload: any): Promise<ResponseDTO>;
     resetPassword(email: string): Promise<{
         success: boolean;
     }>;

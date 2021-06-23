@@ -5,6 +5,7 @@ export declare class SystemInfo {
     thirdPartyAuth: boolean;
 }
 export declare const SystemInfoSchema: import("mongoose").Schema<import("mongoose").Document<SystemInfo, any>, import("mongoose").Model<any, any, any>, undefined>;
+export declare const USER_MODEL = "users";
 export declare class User {
     _id: string;
     firstName: string;

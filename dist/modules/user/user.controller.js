@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserController = void 0;
 const common_1 = require("@nestjs/common");
 const platform_express_1 = require("@nestjs/platform-express");
+const response_dto_1 = require("../../common/dto/response.dto");
 const token_guard_1 = require("../../common/guards/token.guard");
 const upload_tool_1 = require("../../common/tool/upload.tool");
 const get_user_decorator_1 = require("./decorator/get-user.decorator");
@@ -38,9 +39,6 @@ let UserController = class UserController {
     async resetPassword(email) {
         return await this.userService.resetPassword(email);
     }
-    test() {
-        return "hello from test";
-    }
 };
 __decorate([
     common_1.Get('/me'),
@@ -54,7 +52,9 @@ __decorate([
     common_1.Patch('/update'),
     common_1.UseGuards(token_guard_1.MyTokenAuthGuard),
     common_1.UseInterceptors(platform_express_1.FileInterceptor('photo', upload_tool_1.UploadTool.imageUpload)),
-    __param(0, get_user_decorator_1.GetUser()), __param(1, common_1.Body()), __param(2, common_1.UploadedFile()),
+    __param(0, get_user_decorator_1.GetUser()),
+    __param(1, common_1.Body()),
+    __param(2, common_1.UploadedFile()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [user_entity_1.User, user_update_dto_1.UserUpdateDTO, Object]),
     __metadata("design:returntype", Promise)
@@ -66,12 +66,6 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "resetPassword", null);
-__decorate([
-    common_1.Get("/test"),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
-    __metadata("design:returntype", void 0)
-], UserController.prototype, "test", null);
 UserController = __decorate([
     common_1.Controller('user'),
     __metadata("design:paramtypes", [user_service_1.UserService])

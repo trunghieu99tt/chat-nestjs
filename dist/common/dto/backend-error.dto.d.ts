@@ -1,4 +1,4 @@
-export declare class BackendErrorDTo extends Error {
+export declare class BackendErrorDTO extends Error {
     errorCode?: number;
     statusCode: number;
     message: any;

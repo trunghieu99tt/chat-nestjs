@@ -9,7 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UserSchema = exports.User = exports.SystemInfoSchema = exports.SystemInfo = void 0;
+exports.UserSchema = exports.User = exports.USER_MODEL = exports.SystemInfoSchema = exports.SystemInfo = void 0;
 const mongoose_1 = require("@nestjs/mongoose");
 const class_validator_1 = require("class-validator");
 const users_constants_1 = require("./constants/users.constants");
@@ -42,6 +42,7 @@ SystemInfo = __decorate([
 ], SystemInfo);
 exports.SystemInfo = SystemInfo;
 exports.SystemInfoSchema = mongoose_1.SchemaFactory.createForClass(SystemInfo);
+exports.USER_MODEL = "users";
 let User = class User {
 };
 __decorate([
@@ -140,7 +141,7 @@ __decorate([
 ], User.prototype, "jti", void 0);
 User = __decorate([
     mongoose_1.Schema({
-        collection: 'users',
+        collection: exports.USER_MODEL,
         toJSON: { virtuals: true }
     })
 ], User);

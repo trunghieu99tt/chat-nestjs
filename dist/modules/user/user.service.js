@@ -22,6 +22,7 @@ const upload_tool_1 = require("../../common/tool/upload.tool");
 const mailer_1 = require("../../config/mailer");
 const email_tool_1 = require("../../common/tool/email.tool");
 const auth_tool_service_1 = require("../tool/auth-tool/auth-tool.service");
+const response_dto_1 = require("../../common/dto/response.dto");
 let UserService = class UserService {
     constructor(userModel, authToolService) {
         this.userModel = userModel;
@@ -77,7 +78,7 @@ let UserService = class UserService {
             return {
                 data: response,
                 message: "OK",
-                status: 200,
+                statusCode: 200,
             };
         }
         catch (error) {

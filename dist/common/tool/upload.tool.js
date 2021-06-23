@@ -31,7 +31,6 @@ UploadTool.uploadPhotoToServer = async (file) => {
     }
 };
 UploadTool.resizeImage = async (file, width, height, format, quality) => {
-    console.log(`imagePath`, UploadTool.imagePath);
     try {
         await sharp(file.buffer)
             .resize(width, height)
