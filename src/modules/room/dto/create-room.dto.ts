@@ -9,7 +9,7 @@ export class RoomDTO {
     @IsNotEmpty()
     description: string;
 
-    private?: boolean;
+    isPrivate?: boolean;
 
     image?: string
 
