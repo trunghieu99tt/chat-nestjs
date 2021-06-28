@@ -139,6 +139,17 @@ __decorate([
     mongoose_1.Prop(),
     __metadata("design:type", String)
 ], User.prototype, "jti", void 0);
+__decorate([
+    mongoose_1.Prop(mongoose_1.raw([{
+            roomId: {
+                type: String
+            },
+            time: {
+                type: Date
+            }
+        }])),
+    __metadata("design:type", Array)
+], User.prototype, "lastJoining", void 0);
 User = __decorate([
     mongoose_1.Schema({
         collection: exports.USER_MODEL,

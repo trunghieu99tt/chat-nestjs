@@ -28,6 +28,10 @@ export declare class User {
     };
     isThirdParty: boolean;
     jti: string;
+    lastJoining: {
+        roomId: string;
+        time: Date;
+    }[];
     comparePassword: (password: string) => Promise<boolean>;
     checkPasswordConfirm: () => boolean;
 }

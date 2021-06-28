@@ -10,7 +10,7 @@ export declare class UserService {
     constructor(userModel: Model<UserDocument>, authToolService: AuthToolService);
     createUser(userDto: UserDTO | User): Promise<User>;
     findByUsername(username: string): Promise<UserDocument>;
-    findById(id: string): Promise<UserDocument>;
+    findById(id: string): Promise<User & Document & import("mongoose").Document<any, any>>;
     findByEmail(email: string): Promise<UserDocument>;
     findByGoogleID(id: string): Promise<UserDocument>;
     getProfile(id: string): Promise<any>;
@@ -18,4 +18,5 @@ export declare class UserService {
     resetPassword(email: string): Promise<{
         success: boolean;
     }>;
+    updateLatestJoining(userId: string, roomId: string, time?: Date): Promise<User & Document & import("mongoose").Document<any, any>>;
 }

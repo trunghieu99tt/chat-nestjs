@@ -60,7 +60,7 @@ let UserService = class UserService {
         return this.userModel.findOne({ "google.id": id }).exec();
     }
     async getProfile(id) {
-        return await this.userModel.findById(id).lean().then(async (res) => (Object.assign({}, res)));
+        return await this.userModel.findById(id).exec();
     }
     async updateProfile(oldUser, updatedUser, fileUpload) {
         if (fileUpload) {
@@ -95,6 +95,26 @@ let UserService = class UserService {
         await this.userModel.findOneAndUpdate({ email }, { password: newPassword }, { new: true });
         mailer_1.SMTPMailer.sendMail(user.email, "Quen mat khau", email_tool_1.EmailTool.resetPasswordEmail(user.lastName + user.firstName, user.username, token));
         return { success: true };
+    }
+    async updateLatestJoining(userId, roomId, time = new Date()) {
+        const user = await this.findById(userId);
+        const latestJoinings = (user === null || user === void 0 ? void 0 : user.lastJoining) || [];
+        const idx = latestJoinings.findIndex((history) => {
+            return history.roomId.toString() === roomId;
+        });
+        const newJoinTime = {
+            roomId,
+            time
+        };
+        if (idx !== -1) {
+            latestJoinings[idx] = newJoinTime;
+        }
+        else {
+            latestJoinings.push(newJoinTime);
+        }
+        user.lastJoining = latestJoinings;
+        const response = await user.save();
+        return response;
     }
 };
 UserService = __decorate([

@@ -19,10 +19,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
         private userService: UserService) {
     }
 
-
-
     async handleDisconnect(client: any) {
-        console.log("Disconnected");
         const jwt = client.handshake.query.token;
         if (jwt) {
             const auth: any = await this.jwtService.verify(
@@ -65,25 +62,21 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
                     ...this.connectedUsers,
                     user
                 ])];
+                const publicRoom = await this.roomService.getRooms();
+                const privateRoom = await this.roomService.getRooms(user);
+                this.rooms = [
+                    ...publicRoom,
+                    ...privateRoom
+                ]
+                this.server.emit('users', this.connectedUsers);
+                this.server.emit('rooms', this.rooms);
             }
-
-            const publicRoom = await this.roomService.getRooms();
-            const privateRoom = await this.roomService.getRooms(user);
-            this.rooms = [
-                ...publicRoom,
-                ...privateRoom
-            ]
-            Logger.debug("Connected")
-            this.server.emit('users', this.connectedUsers);
-            this.server.emit('rooms', this.rooms);
         }
-
     }
 
 
     @SubscribeMessage('addMessage')
     async handleMessage(@MessageBody() body: any) {
-        Logger.debug("call addMessage")
         const username = body.username;
         const user = this.connectedUsers.find(e => e.username === username);
         await this.roomService.addMessage(body.roomID, {
@@ -95,6 +88,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
             ...publicRoom,
             ...privateRoom
         ]
+        Logger.debug(`this.rooms: ${this.rooms}`)
         this.server.emit('rooms', this.rooms);
     }
 
@@ -111,25 +105,47 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
         this.server.emit('rooms', this.rooms);
     }
 
-    @SubscribeMessage('joinRoom')
-    async handleJoinRoom(@MessageBody() body: any) {
-        Logger.debug("call joinRoom")
+    /**
+     * Event when user join a room which that user has not been a member yet
+     * @param body
+     */
+    @SubscribeMessage('joinNewRoom')
+    async handleJoinNewRoom(@MessageBody() body: any) {
         const { username, roomID } = body;
-        const user = this.connectedUsers.find((e: User) => e.username === username);
-        await this.roomService.addMember(roomID, user);
-        const publicRoom = await this.roomService.getRooms();
-        const privateRoom = await this.roomService.getRooms(user);
-        this.rooms = [
-            ...publicRoom,
-            ...privateRoom
-        ]
-        this.server.emit('rooms', this.rooms);
+        const idx = this.connectedUsers.findIndex((e: User) => e.username === username);
+
+        if (idx !== -1) {
+            const user = this.connectedUsers[idx];
+            const response = await this.userService.updateLatestJoining(user._id, roomID, new Date());
+            await this.roomService.addMember(roomID, user);
+            const publicRoom = await this.roomService.getRooms();
+            const privateRoom = await this.roomService.getRooms(user);
+            this.rooms = [
+                ...publicRoom,
+                ...privateRoom
+            ]
+            this.server.emit('rooms', this.rooms);
+        }
     }
 
+    /**
+     * Event when user join a room which that user has been a member
+     * @param body 
+     */
+    @SubscribeMessage('joinOldRoom')
+    async handleJoinOldRoom(@MessageBody() body: any) {
+        const { username, roomID } = body;
+        const idx = this.connectedUsers.findIndex((e: User) => e.username === username);
+        if (idx !== -1) {
+            const user = this.connectedUsers[idx];
+            const response = await this.userService.updateLatestJoining(user._id, roomID, new Date());
+            this.connectedUsers[idx] = response.toObject();
+            this.server.emit('users', this.connectedUsers);
+        }
+    }
 
     @SubscribeMessage('updateRoom')
     async handleUpdateRoom(@MessageBody() body: any) {
-        Logger.debug("call updateRoom")
         const { username, channel } = body;
         const user = this.connectedUsers.find((e: User) => e.username === username);
         await this.roomService.updateRoom(user, channel._id, ({
@@ -145,7 +161,6 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
             ...privateRoom
         ]
         this.server.emit('rooms', this.rooms);
-
     }
 
 }

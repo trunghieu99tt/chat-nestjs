@@ -43,7 +43,7 @@ export class UserService {
         }).exec();
     }
 
-    async findById(id: string): Promise<UserDocument> {
+    async findById(id: string) {
         return this.userModel.findById(id).exec();
     }
 
@@ -56,7 +56,7 @@ export class UserService {
     }
 
     async getProfile(id: string): Promise<any> {
-        return await this.userModel.findById(id).lean().then(async (res: User) => ({ ...res }));
+        return await this.userModel.findById(id).exec();
     }
 
 
@@ -99,4 +99,23 @@ export class UserService {
         return { success: true };
     }
 
+    async updateLatestJoining(userId: string, roomId: string, time: Date = new Date()) {
+        const user = await this.findById(userId);
+        const latestJoinings = user?.lastJoining || [];
+        const idx = latestJoinings.findIndex((history: any) => {
+            return history.roomId.toString() === roomId
+        });
+        const newJoinTime = {
+            roomId,
+            time
+        }
+        if (idx !== -1) {
+            latestJoinings[idx] = newJoinTime;
+        } else {
+            latestJoinings.push(newJoinTime);
+        }
+        user.lastJoining = latestJoinings;
+        const response = await user.save();
+        return response;
+    }
 }

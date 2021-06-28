@@ -126,6 +126,20 @@ export class User {
     @Prop()
     jti: string;
 
+
+    @Prop(raw([{
+        roomId: {
+            type: String
+        },
+        time: {
+            type: Date
+        }
+    }]))
+    lastJoining: {
+        roomId: string,
+        time: Date
+    }[];
+
     comparePassword: (password: string) => Promise<boolean>;
     checkPasswordConfirm: () => boolean;
 }
