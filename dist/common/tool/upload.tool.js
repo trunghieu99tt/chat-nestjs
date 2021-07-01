@@ -42,7 +42,7 @@ UploadTool.resizeImage = async (file, width, height, format, quality) => {
         throw error;
     }
 };
-UploadTool.resizeAndUploadSingle = async (file, width = 2000, height = 1333, format = "jpeg", quality = 90) => {
+UploadTool.resizeAndUploadSingle = async (file, width = 2000, height = 2000, format = "jpeg", quality = 90) => {
     try {
         await UploadTool.resizeImage(file, width, height, format, quality);
         const uploadResponse = await UploadTool.uploadPhotoToServer(`${UploadTool.imagePath}/uploader.${format}`);

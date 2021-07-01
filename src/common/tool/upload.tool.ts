@@ -51,7 +51,7 @@ export class UploadTool {
     static resizeAndUploadSingle = async (
         file,
         width = 2000,
-        height = 1333,
+        height = 2000,
         format = "jpeg",
         quality = 90
     ) => {

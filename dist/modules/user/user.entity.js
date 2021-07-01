@@ -158,12 +158,6 @@ User = __decorate([
 ], User);
 exports.User = User;
 exports.UserSchema = mongoose_1.SchemaFactory.createForClass(User);
-exports.UserSchema.pre('save', async function () {
-    if (this.isModified('password'))
-        return;
-    const password = this.get('password');
-    this.set('password', password ? await bcrypt.hash(password, 12) : undefined);
-});
 exports.UserSchema.methods.comparePassword = async function comparePassword(password) {
     return bcrypt.compare(password, this.password);
 };

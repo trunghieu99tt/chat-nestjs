@@ -73,6 +73,9 @@ let UserService = class UserService {
         if (updatedUser.password) {
             updatedUser.password = await bcrypt.hash(updatedUser.password, 10);
         }
+        else {
+            updatedUser.password = oldUser.password;
+        }
         try {
             const response = await this.userModel.findOneAndUpdate({ username: oldUser.username }, updatedUser, { new: true });
             return {

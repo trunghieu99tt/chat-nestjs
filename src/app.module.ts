@@ -22,7 +22,6 @@ import configuration from './config/configuration';
 
 // secrets
 import { MONGO_URI } from './common/config/secrets';
-import { ChatGateway } from './modules/chat/chat.gateway';
 import { ChatModule } from './modules/chat/chat.module';
 
 // import { RedisToolModule } from './modules/tool/redis-tool/redis-tool.module';

@@ -146,13 +146,6 @@ export class User {
 
 export const UserSchema = SchemaFactory.createForClass(User);
 
-UserSchema.pre('save', async function () {
-    if (this.isModified('password'))
-        return;
-    const password = this.get('password');
-    this.set('password', password ? await bcrypt.hash(password, 12) : undefined);
-})
-
 UserSchema.methods.comparePassword = async function comparePassword(password: string): Promise<boolean> {
     return bcrypt.compare(password, ((this as unknown) as User).password);
 }
